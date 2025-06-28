@@ -93,6 +93,8 @@ int main(){
             cout << "Enter plot: ";
             getline(cin, b.plot);
 
+            lib.addBook(b);
+
         } else if (choice == 2) {
             lib.viewBooks();
         } else if (choice == 3) {
