@@ -1,12 +1,23 @@
-#ifndef RECOMMENDER_H
-#define RECOMMENDER_H
+#ifndef BOOKRECOMMENDER_H
+#define BOOKRECOMMENDER_H
 
-#include "library.h"
 #include <string>
-using namespace std;
+#include <vector>
+#include <set>
+#include <sstream>
 
-void recommendByMood(Library& lib, const string mood);
-void recommendByCharacter(Library& lib, const string character);
-void recommendByPlot(Library& lib, const string plot);
+struct Book {
+    std::string title;
+    std::string author;
+    std::string mood;
+};
 
-#endif
+std::string trim(const std::string& str);
+
+std::string getCSVField(std::stringstream &ss);
+
+std::vector<Book> loadBooks(const std::string& filename, std::set<std::string>& moods);
+
+void recommendBooks(const std::vector<Book>& books, const std::string& mood);
+
+#endif 
