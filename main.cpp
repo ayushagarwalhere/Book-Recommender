@@ -1,78 +1,54 @@
-//#include "book.h"
-//#include "library.h"
+#include "book.h"
+#include "library.h"
 #include "recommender.h"
+#include "recommenderr.cpp"
+#include "library.cpp"
+#include "utils.cpp"
 #include "utils.h"
 #include <iostream>
+#include <vector>
 #include <string>
 using namespace std;
 
-
-
 void showMenu() {
-    cout << "\n Mood-Based Book Recommendation System \n";
+    cout << "\nMood-Based Book Recommendation System\n";
     cout << "1. Add a Book\n";
     cout << "2. View Library\n";
-    cout << "3. Get Recommendation\n";
-    cout << "4. Sort Library\n";       
+    cout << "3. Get Recommendation by Mood\n";
+    cout << "4. Sort Library\n";
     cout << "5. Search by Title\n";
     cout << "6. Exit\n";
     cout << "Choose an option: ";
 }
-void showRecommendationMenu() {
-    cout << "\n Recommendation Options \n";
-    cout << "1. By Mood\n";
-    cout << "2. By Character Type\n";
-    cout << "3. By Plot\n";
-    cout << "4. Back to Main Menu\n";
+
+void showMoodMenu(const vector<string>& moods) {
+    cout << "\nMood Options:\n";
+    for (size_t i = 0; i < moods.size(); ++i) {
+        cout << i + 1 << ". " << moods[i] << "\n";
+    }
+    cout << moods.size() + 1 << ". Back to Main Menu\n";
     cout << "Choose an option: ";
 }
-void showMoodMenu() {
-    cout << "\n Mood Options \n";
-    cout <<"1. Calm\n";
-    cout <<"2. Romantic\n";
-    cout <<"3. Funny\n";
-    cout <<"4. Motivational\n";
-    cout <<"5. Sad\n";
-    cout <<"6. Lonely\n";
-    cout <<"7. Back to Main Menu\n";
-    cout <<"Choose an option: "; 
-}
-void showCharacterMenu() {
-    cout <<"\n Character Type Options \n";
-    cout <<"1. Underdog\n";
-    cout <<"2. Anti-Hero\n";
-    cout <<"3. Detective\n";
-    cout <<"4. Romantic Lead\n";
-    cout <<"5. Dark Protagonist\n";
-    cout <<"6. Dreamer\n";
-    cout <<"7. Back to Main Menu\n";
-    cout <<"Choose an option: ";
-}
-void showPlotMenu() {
-    cout <<"\n Plot Options \n";
-    cout <<"1. Conflict \n";
-    cout <<"2. Open\n";
-    cout <<"3. Generations\n";
-    cout <<"4. Lots Of Twists & Turns\n";
-    cout <<"5. Success against the odds\n";
-    cout <<"6. Quest\n";
-    cout <<"7. Back to Main Menu\n";
-    cout <<"Choose an option: ";
-}
+
 void showSortMenu() {
-    cout << "\nSort By:\n";
+    cout << "\nSort Library By:\n";
     cout << "1. Title\n";
     cout << "2. Author\n";
     cout << "3. Mood\n";
-    cout << "4. Exit\n";
-    cout << "Choose option: ";
+    cout << "4. Back to Main Menu\n";
+    cout << "Choose an option: ";
 }
 
-int main(){
+int main() {
     Library lib;
     int choice;
 
-     while (true) {
+    vector<string> validMoods = {
+        "Tense", "Magical", "Thoughtful", "Nostalgic", "Romantic",
+        "Poignant", "Adventurous", "Dark", "Mysterious"
+    };
+
+    while (true) {
         showMenu();
         cin >> choice;
         cin.ignore();
@@ -85,179 +61,75 @@ int main(){
             getline(cin, b.author);
             cout << "Enter genre: ";
             getline(cin, b.genre);
-            cout << "Enter mood: ";
+            cout << "Enter mood (choose one of the 9 moods): ";
             getline(cin, b.mood);
-            lib.addBook(b);
-            cout << "Enter character type: ";
-            getline(cin, b.character);
-            cout << "Enter plot: ";
-            getline(cin, b.plot);
-
             lib.addBook(b);
 
         } else if (choice == 2) {
             lib.viewBooks();
+
         } else if (choice == 3) {
-            int recommend_choice;
+            int moodChoice;
             while (true) {
-                showRecommendationMenu();
-                cin >> recommend_choice;
+                showMoodMenu(validMoods);
+                cin >> moodChoice;
                 cin.ignore();
 
-                if(recommend_choice == 1) {
-                    int mood_choice;
-                    while(true) {
-                        showMoodMenu();
-                        cin >> mood_choice;
-                        cin.ignore();
-
-                        if(mood_choice == 1){
-                            recommendByMood(lib, "Calm");
-                        }
-                        if(mood_choice == 2){
-                            recommendByMood(lib, "Romantic");
-                        }
-                        if(mood_choice == 3){
-                            recommendByMood(lib, "Funny");
-                        }
-                        if(mood_choice == 4){
-                            recommendByMood(lib, "Motivational");
-                        }
-                        if(mood_choice == 5){
-                            recommendByMood(lib, "Sad");
-                        }
-                        if(mood_choice == 6){
-                            recommendByMood(lib, "Lonely");
-                        }
-                        if(mood_choice == 7){
-                            break;
-                        }
-                        else{
-                            cout << "Select a valid option !!";
-                        }
-                    }
-                }
-                if(recommend_choice == 2){
-                    int char_choice;
-                    while(true){
-                        showCharacterMenu();
-                        cin >> char_choice;
-                        cin.ignore();
-
-                        if(char_choice == 1){
-                            recommendByCharacter(lib, "Underdog");
-                        }
-                        if(char_choice == 2){
-                            recommendByCharacter(lib, "Anti-Hero");
-                        }
-                        if(char_choice == 3){
-                            recommendByCharacter(lib, "Detective");
-                        }
-                        if(char_choice == 4){
-                            recommendByCharacter(lib, "Romantic Lead");
-                        }
-                        if(char_choice == 5){
-                            recommendByCharacter(lib, "Dark Protagonist");
-                        }
-                        if(char_choice == 6){
-                            recommendByCharacter(lib, "Dreamer");
-                        }
-                        if(char_choice == 7){
-                            break;
-                        }
-                        else{
-                            cout << "Select a valid option !!";
-                        }
-
-                    }
-                }
-                if(recommend_choice == 3){
-                    int plot_choice;
-
-                    while(true){
-                        showPlotMenu();
-                        cin >> plot_choice;
-                        cin.ignore();
-
-                        if(plot_choice == 1){
-                            recommendByPlot(lib, "Conflict");
-                        }
-                        if(plot_choice == 2){
-                            recommendByPlot(lib, "Open");
-                        }
-                        if(plot_choice == 3){
-                            recommendByPlot(lib, "Generations");
-                        }
-                        if(plot_choice == 4){
-                            recommendByPlot(lib, "Lots Of Twists & Turns");
-                        }
-                        if(plot_choice == 5){
-                            recommendByPlot(lib, "Success against the odds");
-                        }
-                        if(plot_choice == 6){
-                           recommendByPlot(lib, "Quest");
-                        }
-                        if(plot_choice == 7){
-                            break;
-                        }
-                        else{
-                            cout << "Select a valid option !!";
-                        }
-                    }
-                }
-                if(recommend_choice == 4){
+                if (moodChoice >= 1 && moodChoice <= validMoods.size()) {
+                    recommendByMood(lib.getBooks(), validMoods[moodChoice - 1]);
+                } else if (moodChoice == validMoods.size() + 1) {
                     break;
+                } else {
+                    cout << "Select a valid option!\n";
                 }
             }
-        }   else if(choice == 4){
-                    int sort_choice;
-                    
-                    while(true){
-                        showSortMenu();
-                        cin >> sort_choice;
-                        cin.ignore();
 
-                        if(sort_choice == 1){
-                            lib.sortByTitle();
-                            lib.viewBooks();
-                        }
-                        if(sort_choice == 2){
-                            lib.sortByAuthor();
-                            lib.viewBooks();
-                        }
-                        if(sort_choice == 3){
-                            lib.sortByMood();
-                            lib.viewBooks();
-                        }
-                        if(sort_choice == 4){
-                            break;
-                        }
-                        else{
-                            cout << "Select a valid option !!";
-                        }
-                    }
-            }else if (choice == 5) {
-                    string searchTitle;
-                    cout << "Enter book title to search: ";
-                    getline(cin, searchTitle);
+        } else if (choice == 4) {
+            int sortChoice;
+            while (true) {
+                showSortMenu();
+                cin >> sortChoice;
+                cin.ignore();
 
-                    int index = lib.searchByTitle(searchTitle);
-                    if (index != -1) {
-                        Book& found = lib.getBooks()[index];
-                        cout << "✅ Book found:\n";
-                        cout << "Title: " << found.title << "\n";
-                        cout << "Author: " << found.author << "\n";
-                        cout << "Genre: " << found.genre << "\n";
-                        cout << "Mood: " << found.mood << "\n";
-                    } else {
-                    cout << "❌ Book not found.\n";
-                    }
-            } else if(choice == 6){
-                cout << "Goodbye !!";
-                break;
+                if (sortChoice == 1) {
+                    lib.sortByTitle();
+                    lib.viewBooks();
+                } else if (sortChoice == 2) {
+                    lib.sortByAuthor();
+                    lib.viewBooks();
+                } else if (sortChoice == 3) {
+                    lib.sortByMood();
+                    lib.viewBooks();
+                } else if (sortChoice == 4) {
+                    break;
+                } else {
+                    cout << "Select a valid option!\n";
+                }
             }
-            else{
-               cout << "Select a valid option !!";
-            }   
+
+        } else if (choice == 5) {
+            string searchTitle;
+            cout << "Enter book title to search: ";
+            getline(cin, searchTitle);
+
+            int index = lib.searchByTitle(searchTitle);
+            if (index != -1) {
+                Book& found = lib.getBooks()[index];
+                cout << "Book found:\n";
+                cout << "Title: " << found.title << "\n";
+                cout << "Author: " << found.author << "\n";
+                cout << "Genre: " << found.genre << "\n";
+                cout << "Mood: " << found.mood << "\n";
+            } else {
+                cout << "Book not found.\n";
+            }
+
+        } else if (choice == 6) {
+            cout << "Goodbye!\n";
+            break;
+
+        } else {
+            cout << "Select a valid option!\n";
         }
+    }
 }
