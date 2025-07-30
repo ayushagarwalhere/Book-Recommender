@@ -8,8 +8,6 @@ struct Book{
     string title;
     string author;
     string genre;
-    string character;
-    string plot;
     string mood;
 };
 
