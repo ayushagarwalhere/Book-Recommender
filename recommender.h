@@ -1,16 +1,11 @@
 #ifndef BOOKRECOMMENDER_H
 #define BOOKRECOMMENDER_H
 
+#include "book.h"
 #include <string>
 #include <vector>
 #include <set>
 #include <sstream>
-
-struct Book {
-    std::string title;
-    std::string author;
-    std::string mood;
-};
 
 std::string trim(const std::string& str);
 
