@@ -1,9 +1,14 @@
-#include "Recommender.h"
+#include "recommender.h"   
+#include "book.h"
+#include "library.h"
 #include <iostream>
 #include <fstream>
 #include <algorithm>
 #include <random>
 #include <ctime>
+#include <vector>
+#include <set>
+#include <sstream>
 
 std::string trim(const std::string& str) {
     size_t first = str.find_first_not_of(" \"");
@@ -38,15 +43,16 @@ std::vector<Book> loadBooks(const std::string& filename, std::set<std::string>& 
     while (getline(file, line)) {
         std::stringstream ss(line);
 
-        std::string id = getCSVField(ss);
+        std::string id = getCSVField(ss);      
         std::string author = getCSVField(ss);
-        std::string year = getCSVField(ss);
+        std::string year = getCSVField(ss);     
         std::string title = getCSVField(ss);
+        std::string genre = getCSVField(ss);   
         std::string mood = getCSVField(ss);
 
         if (title.empty() || mood.empty()) continue;
 
-        books.push_back({title, author, mood});
+        books.push_back({title, author, genre, mood});
         moods.insert(mood);
     }
 
@@ -54,7 +60,7 @@ std::vector<Book> loadBooks(const std::string& filename, std::set<std::string>& 
     return books;
 }
 
-void recommendBooks(const std::vector<Book>& books, const std::string& mood) {
+void recommendByMood(const std::vector<Book>& books, const std::string& mood) {
     std::vector<Book> matching;
     for (const auto& book : books) {
         if (book.mood == mood) {
@@ -67,8 +73,8 @@ void recommendBooks(const std::vector<Book>& books, const std::string& mood) {
         return;
     }
 
-    std::srand(static_cast<unsigned int>(std::time(nullptr)));
-    std::random_shuffle(matching.begin(), matching.end());
+    std::mt19937 rng(static_cast<unsigned int>(std::time(nullptr)));
+    std::shuffle(matching.begin(), matching.end(), rng);
 
     std::cout << "\nRecommended books for mood [" << mood << "]:\n";
     int count = std::min(10, static_cast<int>(matching.size()));
@@ -76,3 +82,7 @@ void recommendBooks(const std::vector<Book>& books, const std::string& mood) {
         std::cout << "- " << matching[i].title << " by " << matching[i].author << "\n";
     }
 }
+
+
+
+     
