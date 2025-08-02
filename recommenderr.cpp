@@ -47,12 +47,12 @@ std::vector<Book> loadBooks(const std::string& filename, std::set<std::string>& 
         std::string author = getCSVField(ss);
         std::string year = getCSVField(ss);     
         std::string title = getCSVField(ss);
-        std::string genre = getCSVField(ss);   
+       // std::string genre = getCSVField(ss);   
         std::string mood = getCSVField(ss);
 
         if (title.empty() || mood.empty()) continue;
 
-        books.push_back({title, author, genre, mood});
+        books.push_back({title, author, mood});
         moods.insert(mood);
     }
 
@@ -86,3 +86,4 @@ void recommendByMood(const std::vector<Book>& books, const std::string& mood) {
 
 
      
+
